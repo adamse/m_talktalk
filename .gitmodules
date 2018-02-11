@@ -1,0 +1,3 @@
+[submodule "cbor11"]
+	path = cbor11
+	url = https://github.com/jakobvarmose/cbor11.git
