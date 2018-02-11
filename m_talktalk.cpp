@@ -9,7 +9,7 @@
 #include "inspircd.h"
 
 #include "cbor11/cbor11.h"
-#include "cbor11/cbor11.cpp"
+// #include "cbor11/cbor11.cpp"
 
 class TTUser : public User {
 public:
@@ -25,7 +25,7 @@ public:
 TTUser::TTUser(std::string name)
   : User(ServerInstance->GetUID(), ServerInstance->Config->ServerName, 4) {
 
-  this->ChangeDisplayedHost("telegram");
+  this->ChangeDisplayedHost("talktalk");
   this->ChangeIdent("ident");
   this->ChangeName("ident");
   this->ChangeNick(name);
@@ -54,17 +54,15 @@ enum TTMessageType {
   TT_JOIN = 0, // Join channel
   TT_ADDUSER, // Add user
   TT_IRCMESSAGE, // Message from IRC channel
-  TT_MESSAGE, // Telegram message
+  TT_MESSAGE, // Talktalk message
 };
 
-
-class ModuleAdam : public Module {
+class ModuleTalkTalk : public Module {
 private:
 public:
 
   Users users;
   Channels channels;
-
 
   void init() {
 
@@ -102,14 +100,14 @@ public:
       return;
 
     for (UsersIt i = users.begin(); i != users.end(); ++i) {
-      ServerInstance->Users->QuitUser(*i, "Unloading m_telegram.so");
+      ServerInstance->Users->QuitUser(*i, "Unloading m_talktalk.so");
     }
   }
 
   virtual Version GetVersion() { return Version ("Test"); }
 
   ModResult OnAcceptConnection(int nfd, ListenSocket* from, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) {
-    if (from->bind_tag->getString("type") != "telegram")
+    if (from->bind_tag->getString("type") != "talktalk")
       return MOD_RES_PASSTHRU;
 
     return MOD_RES_ALLOW;
@@ -155,4 +153,4 @@ public:
 
 };
 
-MODULE_INIT(ModuleAdam)
+MODULE_INIT(ModuleTalkTalk)
